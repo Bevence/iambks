@@ -47,7 +47,14 @@ function AppItems({
 
 const Dock: React.FC<IDockDetailProps> = ({ setDockId }) => {
   let mouseX = useMotionValue(Infinity);
-  const items = ["Home", "About Me", "Portfolio", "Contact"];
+  const items = [
+    "About Me",
+    "Portfolio",
+    "Skills",
+    "Resume",
+    "Blog",
+    "Contact",
+  ];
 
   return (
     <>

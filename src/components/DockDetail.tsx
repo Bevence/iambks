@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 import ContactForm from "./ContactForm";
+import AboutMe from "./AboutMe";
+import Skills from "./Skills";
 
 interface IDockDetailProps {
   setDockId: React.Dispatch<React.SetStateAction<string | null>>;
@@ -33,9 +35,11 @@ const DockDetail: React.FC<IDockDetailProps> = ({ setDockId, dockId }) => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="z-30 w-1/2 min-h-96"
+        // className="z-30 w-1/2 min-h-96"
       >
-        <ContactForm />
+        {dockId === "Contact" && <ContactForm />}
+        {dockId === "About Me" && <AboutMe />}
+        {dockId === "Skills" && <Skills />}
         {/* <button onClick={() => setDockId(null)}>Close Modal</button> */}
       </motion.div>
     </AnimatePresence>
