@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Dock from "./components/Dock";
 import DockDetail from "./components/DockDetail";
+import profileImage from "./assets/profile.jpg";
 
 function App() {
   const [dockId, setDockId] = useState<string | null>(null);
@@ -14,7 +15,12 @@ function App() {
             dockId && "blur"
           }`}
         >
-          <div className="text-blue-500 w-60 h-60 rounded-full bg-[url('./images/profile.jpg')] bg-cover bg-center"></div>
+          <div
+            className="text-blue-500 w-60 h-60 rounded-full bg-cover bg-center"
+            style={{
+              backgroundImage: `url(${profileImage})`,
+            }}
+          ></div>
 
           {/* <div className="absolute w-4 h-4 bg-blue-500 rounded-full top-0 left-1/2 transform -translate-x-1/2"></div>
           <div className="absolute w-4 h-4 bg-blue-500 rounded-full top-1/2 left-0 transform -translate-y-1/2"></div>
