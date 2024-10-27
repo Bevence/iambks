@@ -1,3 +1,14 @@
+import { Field, Form, Formik } from "formik";
+import { supabase } from "../config/supabase";
+import { toast } from "react-toastify";
+
+interface FormValues {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
 const ContactForm = () => {
   return (
     <>
@@ -91,34 +102,52 @@ const ContactForm = () => {
           </div>
         </div>
 
-        <form className="ml-auto space-y-4">
-          <input
-            type="text"
-            placeholder="Name"
-            className="w-full rounded-md py-3 px-4  text-gray-300 text-sm outline-blue-500 focus:bg-transparent"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full rounded-md py-3 px-4  text-gray-300 text-sm outline-blue-500 focus:bg-transparent"
-          />
-          <input
-            type="text"
-            placeholder="Subject"
-            className="w-full rounded-md py-3 px-4  text-gray-300 text-sm outline-blue-500 focus:bg-transparent"
-          />
-          <textarea
-            placeholder="Message"
-            rows={6}
-            className="w-full rounded-md px-4  text-gray-300 text-sm pt-3 outline-blue-500 focus:bg-transparent"
-          ></textarea>
-          <button
-            type="button"
-            className="text-white bg-blue-500 hover:bg-blue-600 tracking-wide rounded-md text-sm px-4 py-3 w-full !mt-6"
-          >
-            Send
-          </button>
-        </form>
+        <Formik
+          initialValues={{ name: "", email: "", subject: "", message: "" }}
+          onSubmit={async (values: FormValues, { resetForm }) => {
+            try {
+              await supabase.from("Contact").insert(values);
+              toast.success("Form submitted successfully!!!");
+              resetForm();
+            } catch (error) {
+              toast.error("Something went wrong");
+            }
+          }}
+        >
+          <Form className="ml-auto space-y-4">
+            <Field
+              type="text"
+              name="name"
+              placeholder="Name"
+              className="w-full rounded-md py-3 px-4  text-gray-300 text-sm outline-blue-500 focus:bg-transparent"
+            />
+            <Field
+              type="email"
+              name="email"
+              placeholder="Email"
+              className="w-full rounded-md py-3 px-4  text-gray-300 text-sm outline-blue-500 focus:bg-transparent"
+            />
+            <Field
+              type="text"
+              name="subject"
+              placeholder="Subject"
+              className="w-full rounded-md py-3 px-4  text-gray-300 text-sm outline-blue-500 focus:bg-transparent"
+            />
+            <Field
+              as="textarea"
+              name="message"
+              placeholder="Message"
+              rows={6}
+              className="w-full rounded-md px-4  text-gray-300 text-sm pt-3 outline-blue-500 focus:bg-transparent"
+            />
+            <button
+              type="submit"
+              className="text-white bg-blue-500 hover:bg-blue-600 tracking-wide rounded-md text-sm px-4 py-3 w-full !mt-6"
+            >
+              Send
+            </button>
+          </Form>
+        </Formik>
       </div>
     </>
   );
