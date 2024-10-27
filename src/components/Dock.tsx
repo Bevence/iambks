@@ -1,12 +1,11 @@
 import {
-  AnimatePresence,
   motion,
   MotionValue,
   useMotionValue,
   useSpring,
   useTransform,
 } from "framer-motion";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 
 interface IDockDetailProps {
   setDockId: React.Dispatch<React.SetStateAction<string | null>>;
