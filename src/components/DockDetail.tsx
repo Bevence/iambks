@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import ContactForm from "./ContactForm";
 import AboutMe from "./AboutMe";
 import Skills from "./Skills";
+import Portfolio from "./Portfolio";
 
 interface IDockDetailProps {
   setDockId: React.Dispatch<React.SetStateAction<string | null>>;
@@ -38,8 +39,9 @@ const DockDetail: React.FC<IDockDetailProps> = ({ setDockId, dockId }) => {
         // className="z-30 w-1/2 min-h-96"
       >
         {dockId === "Contact" && <ContactForm />}
-        {dockId === "About Me" && <AboutMe />}
+        {dockId === "About Me" && <AboutMe setDockId={setDockId} />}
         {dockId === "Skills" && <Skills />}
+        {dockId === "Portfolio" && <Portfolio />}
         {/* <button onClick={() => setDockId(null)}>Close Modal</button> */}
       </motion.div>
     </AnimatePresence>

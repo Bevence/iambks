@@ -32,6 +32,9 @@ function App() {
           <Dock setDockId={setDockId} />
         </div>
       </div>
+      <footer className="w-full h-16 fixed bottom-0 left-0 bg-gray-800 text-white flex justify-center items-center">
+        <p className="text-center">© 2024 iambks. All rights reserved.</p>
+      </footer>
     </>
   );
 }
