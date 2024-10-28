@@ -1,8 +1,30 @@
+import { useEffect, useRef } from "react";
+import { supabase } from "../config/supabase";
+import { browserName } from "react-device-detect";
+import axios from "axios";
+
 interface IDockDetailProps {
   setDockId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const AboutMe: React.FC<IDockDetailProps> = ({ setDockId }) => {
+  const hasRegistered = useRef(false);
+
+  const registerVisitor = async () => {
+    const res = await axios.get("https://api.ipify.org/?format=json");
+    await supabase.from("Visitor").insert({
+      browser: browserName,
+      ip_address: res.data.ip,
+    });
+  };
+
+  useEffect(() => {
+    if (!hasRegistered.current) {
+      registerVisitor();
+      hasRegistered.current = true;
+    }
+  }, []);
+
   return (
     <>
       <div className="font-sans">
