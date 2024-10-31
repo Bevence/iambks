@@ -11,6 +11,15 @@ interface IDockDetailProps {
   setDockId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
+function getTextWidth(text: string, font: string): number {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  if (!context) return 0; // Handle error gracefully
+  context.font = font; // Set the font style
+  const metrics = context.measureText(text); // Measure the text
+  return metrics.width; // Return the width
+}
+
 function AppItems({
   mouseX,
   title,
@@ -21,6 +30,9 @@ function AppItems({
   setSelectedId: any;
 }) {
   let ref = useRef<HTMLDivElement>(null);
+  const fontString =
+    "16px 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif";
+  const titleWidth = getTextWidth(title, fontString) + 10;
 
   let distance = useTransform(mouseX, (val) => {
     let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
@@ -28,7 +40,11 @@ function AppItems({
     return val - bounds.x - bounds.width / 2;
   });
 
-  let widthSync = useTransform(distance, [-150, 0, 150], [80, 200, 80]);
+  let widthSync = useTransform(
+    distance,
+    [-150, 0, 150],
+    [titleWidth, titleWidth + 120, titleWidth]
+  );
   let width = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
 
   return (
