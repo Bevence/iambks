@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../config/supabase";
 import { toast } from "react-toastify";
 
@@ -12,7 +12,9 @@ interface IPortfolio {
 }
 
 const Portfolio = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<IPortfolio[] | null>(null);
+  const [isScrolling, setIsScrolling] = useState<boolean>(true);
 
   const fetchPortfolioList = async () => {
     let { data: Porfolio, error } = await supabase
@@ -25,14 +27,46 @@ const Portfolio = () => {
     setList(Porfolio);
   };
 
+  const handleMouseEnter = () => {
+    setIsScrolling(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsScrolling(true);
+  };
+
   useEffect(() => {
     fetchPortfolioList();
   }, []);
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer || !isScrolling) return;
+
+    const scrollInterval = setInterval(() => {
+      if (
+        scrollContainer.scrollLeft + scrollContainer.clientWidth >=
+        scrollContainer.scrollWidth
+      ) {
+        scrollContainer.scrollLeft = 0;
+      } else {
+        scrollContainer.scrollLeft += 1;
+      }
+    }, 30);
+
+    return () => clearInterval(scrollInterval);
+  }, [list, isScrolling]);
+
   return (
     <>
       <div className="font-[sans-serif] p-4">
         <div className="max-w-6xl mx-auto">
-          <div className="flex gap-5 overflow-x-auto mt-12 max-lg:max-w-3xl max-md:max-w-md mx-auto">
+          <div
+            ref={scrollRef}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className="flex gap-5 overflow-x-auto no-scrollbar mt-12 max-lg:max-w-3xl max-md:max-w-md mx-auto"
+          >
             {list &&
               list.map((d, index) => (
                 <div
